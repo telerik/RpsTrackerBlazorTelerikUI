@@ -23,7 +23,7 @@ Both active trialists and license holders can take advantage of our legendary te
 
 ## **Useful Links**
 
--   [Video onboarding training Telerik UI for Blazor components](https://learn.telerik.com/learn/course/27/Telerik%2520UI%2520for%2520Blazor)
+-   [Video onboarding training Telerik UI for Blazor components](https://learn.telerik.com/learn/course/internal/view/elearning/27/telerik-ui-for-blazor)
 -   [Starter RPS Issue Tracker Projects GitHub Repo](https://github.com/telerik/RpsTrackerBlazor)
 -   Browse all [Telerik UI for Blazor component demos](https://demos.telerik.com/blazor-ui)
 -   Browse [Telerik UI for Blazor documentation](https://docs.telerik.com/blazor-ui/introduction?utm_medium=referral&utm_source=github&utm_campaign=blazor-ui-trial-gh-public-readme)
