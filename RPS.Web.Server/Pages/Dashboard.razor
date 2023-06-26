@@ -41,9 +41,12 @@
             </div>
 
             <div class="btn-group mr-2">
-                <TelerikButton OnClick="@(_ => DateRangeFilter(3))">3 Months</TelerikButton>
-                <TelerikButton OnClick="@(_ => DateRangeFilter(6))">6 Months</TelerikButton>
-                <TelerikButton OnClick="@(_ => DateRangeFilter(12))">1 Year</TelerikButton>
+                <TelerikButtonGroup SelectionMode="ButtonGroupSelectionMode.Single">
+                    <ButtonGroupToggleButton OnClick="@(_ => DateRangeFilter(3))">3 Months</ButtonGroupToggleButton>
+                    <ButtonGroupToggleButton OnClick="@(_ => DateRangeFilter(6))">6 Months</ButtonGroupToggleButton>
+                    <ButtonGroupToggleButton OnClick="@(_ => DateRangeFilter(12))">1 Year</ButtonGroupToggleButton>
+                </TelerikButtonGroup>
+
             </div>
         </div>
     </div>
