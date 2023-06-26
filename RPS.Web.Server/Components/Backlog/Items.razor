@@ -51,7 +51,7 @@
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="@(nameof(PtItem.Estimate))" Width="100px" />
+        <GridColumn Field="@(nameof(PtItem.Estimate))" Width="100px" TextAlign="ColumnTextAlign.Right" />
         <GridColumn Field="DateCreated" Title="Created" Width="160px">
             <Template>
                 @((context as PtItem).DateCreated.ToString("MMM d, yyyy"))
