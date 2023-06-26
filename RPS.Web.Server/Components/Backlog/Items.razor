@@ -4,11 +4,16 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
     <h1 class="h2">Backlog</h1>
+
+
+
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-            <TelerikButton OnClick="@(_ => SelectPreset("My"))">My Items</TelerikButton>
-            <TelerikButton OnClick="@(_ => SelectPreset("Open"))">Open Items</TelerikButton>
-            <TelerikButton OnClick="@(_ => SelectPreset("Closed"))">Closed Items</TelerikButton>
+            <TelerikButtonGroup SelectionMode="ButtonGroupSelectionMode.Single">
+                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.My" OnClick="@(_ => SelectPreset("My"))">My Items</ButtonGroupToggleButton>
+                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.Open" OnClick="@(_ => SelectPreset("Open"))">Open Items</ButtonGroupToggleButton>
+                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.Closed" OnClick="@(_ => SelectPreset("Closed"))">Closed Items</ButtonGroupToggleButton>
+            </TelerikButtonGroup>
         </div>
 
         <div class="btn-group mr-2">
