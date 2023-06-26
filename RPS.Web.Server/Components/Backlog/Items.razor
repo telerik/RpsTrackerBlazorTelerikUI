@@ -24,7 +24,7 @@
 </div>
 
 
-<TelerikGrid Height="550px" Data="PtItems" Pageable="true" Sortable="true" OnRowClick="@OnRowClickHandler">
+<TelerikGrid Height="550px" Data="PtItems" Pageable="true" Sortable="true" FilterMode="GridFilterMode.FilterMenu" OnRowClick="@OnRowClickHandler">
     <GridColumns>
         <GridColumn Field="@(nameof(PtItem.Type))" Title=" " Width="50px">
             <Template>
@@ -43,7 +43,7 @@
             </Template>
         </GridColumn>
         <GridColumn Field="@(nameof(PtItem.Title))" Title="Title" />
-        <GridColumn Field="@(nameof(PtItem.Priority))" Width="100px">
+        <GridColumn Field="@(nameof(PtItem.Priority))" Width="100px" Filterable="true" FilterMenuType="FilterMenuType.CheckBoxList">
             <Template>
                 @{
                     var item = context as PtItem;
