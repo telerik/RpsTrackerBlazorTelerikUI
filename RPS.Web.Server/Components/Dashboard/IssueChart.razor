@@ -20,6 +20,9 @@
     <ChartCategoryAxes>
         <ChartCategoryAxis Categories="@Categories" Type="ChartCategoryAxisType.Date" BaseUnit="ChartCategoryAxisBaseUnit.Months">
             <ChartCategoryAxisMajorGridLines Visible="false"></ChartCategoryAxisMajorGridLines>
+            <ChartCategoryAxisLabels>
+                <ChartCategoryAxisLabelsRotation Angle="@AutoLabelsRotation" />
+            </ChartCategoryAxisLabels>
         </ChartCategoryAxis>
     </ChartCategoryAxes>
 
@@ -31,6 +34,8 @@
 @code {
 
     public TelerikChart ChartRef { get; set; }
+
+    string AutoLabelsRotation = "auto";
 
     public void RefreshTelerikChart()
     {
