@@ -1,5 +1,6 @@
 ﻿
 @using RPS.Core.Models
+@using RPS.Core.Models.Dto;
 @using Telerik.DataSource;
 @inject NavigationManager NavigationManager
 
@@ -26,12 +27,15 @@
 
 
 <TelerikGrid Height="550px" 
-        Data="@PtItems" 
-        Pageable="true" 
-        Sortable="true" 
-        FilterMode="@GridFilterMode.FilterMenu" 
-        OnRowClick="@OnRowClickHandler"
-        OnStateInit="@((GridStateEventArgs<PtItem> args) => OnStateInitHandler(args))">
+            Data="@PtItems" 
+            Pageable="true" 
+            Sortable="true" 
+            FilterMode="@GridFilterMode.FilterMenu"
+            EditMode="@GridEditMode.Popup"
+            OnRowClick="@OnRowClickHandler"
+            OnStateInit="@((GridStateEventArgs<PtItem> args) => OnStateInitHandler(args))"
+            OnUpdate="@UpdateHandler">
+
     <GridColumns>
         <GridColumn Field="@(nameof(PtItem.Type))" Title=" " Width="50px">
             <Template>
@@ -41,7 +45,7 @@
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="Assignee.FullName" Title="Assignee" Width="120px">
+        <GridColumn Field="Assignee.FullName" Title="Assignee" Width="120px" Editable="false">
             <Template>
                 @{
                     var item = context as PtItem;
@@ -67,11 +71,18 @@
             </Template>
         </GridColumn>
         <GridColumn Field="@(nameof(PtItem.Estimate))" Width="100px" TextAlign="ColumnTextAlign.Right" />
-        <GridColumn Field="DateCreated" Title="Created" Width="160px">
+        <GridColumn Field="DateCreated" Title="Created" Width="160px" Editable="false">
             <Template>
                 @((context as PtItem).DateCreated.ToString("MMM d, yyyy"))
             </Template>
         </GridColumn>
+
+        <GridCommandColumn>
+            <GridCommandButton Command="Save" ShowInEdit="true">Update</GridCommandButton>
+            <GridCommandButton Command="Edit">Edit</GridCommandButton>
+            <GridCommandButton Command="Cancel" ShowInEdit="true">Cancel</GridCommandButton>
+        </GridCommandColumn>
+
     </GridColumns>
 </TelerikGrid>
 
@@ -137,6 +148,20 @@
         args.GridState = state;
     }
 
+    private void UpdateHandler(GridCommandEventArgs args)
+    {
+        var item = (PtItem)args.Item;
+
+        // perform actual data source operations here through your service
+        var updateItem = ToPtUpdateItem(item);
+        RpsItemsRepo.UpdateItem(updateItem);
+
+        // update the local view-model data with the service data
+        Refresh();
+
+        Console.WriteLine("Update event is fired.");
+    }
+
     private void RowSelected(int itemId)
     {
         NavigationManager.NavigateTo($"/details/{itemId}");
@@ -145,6 +170,21 @@
     private void OnRowClickHandler(GridRowClickEventArgs args)
     {
         RowSelected((args.Item as PtItem).Id);
+    }
+
+    private PtUpdateItem ToPtUpdateItem(PtItem item)
+    {
+        return new PtUpdateItem
+            {
+                Id = item.Id,
+                Title = item.Title,
+                Description = item.Description,
+                Estimate = item.Estimate,
+                Priority = item.Priority,
+                Status = item.Status,
+                Type = item.Type,
+                AssigneeId = item.Assignee.Id
+            };
     }
 }
 
