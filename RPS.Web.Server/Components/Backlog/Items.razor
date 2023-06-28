@@ -45,11 +45,19 @@
             <Template>
                 @{
                     var item = context as PtItem;
-                    <UserAvatar User="item.Assignee" />
+                    <span data-itemId="@item.Id" id="@( "tooltip-target" + item.Id)">
+                        <UserAvatar User="item.Assignee" />
+                    </span>
+                    <TelerikTooltip TargetSelector="@( "#tooltip-target" +  item.Id)"
+                                    Position="@TooltipPosition.Right">
+                        <Template Context="ttipContext">
+                            <span>@item.Assignee.FullName</span>
+                        </Template>
+                    </TelerikTooltip>
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="@(nameof(PtItem.Title))" Title="Title" />
+        <GridColumn Field="@(nameof(PtItem.Title))" Title="Title"></GridColumn>
         <GridColumn Field="@(nameof(PtItem.Priority))" Width="100px" Filterable="true" FilterMenuType="FilterMenuType.CheckBoxList">
             <Template>
                 @{
