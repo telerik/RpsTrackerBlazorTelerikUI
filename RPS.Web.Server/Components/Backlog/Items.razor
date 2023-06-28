@@ -1,5 +1,6 @@
 ﻿
 @using RPS.Core.Models
+@using Telerik.DataSource;
 @inject NavigationManager NavigationManager
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
@@ -24,7 +25,13 @@
 </div>
 
 
-<TelerikGrid Height="550px" Data="PtItems" Pageable="true" Sortable="true" FilterMode="GridFilterMode.FilterMenu" OnRowClick="@OnRowClickHandler">
+<TelerikGrid Height="550px" 
+        Data="@PtItems" 
+        Pageable="true" 
+        Sortable="true" 
+        FilterMode="@GridFilterMode.FilterMenu" 
+        OnRowClick="@OnRowClickHandler"
+        OnStateInit="@((GridStateEventArgs<PtItem> args) => OnStateInitHandler(args))">
     <GridColumns>
         <GridColumn Field="@(nameof(PtItem.Type))" Title=" " Width="50px">
             <Template>
@@ -107,6 +114,19 @@
     private void SelectPreset(string presetStr)
     {
         NavigationManager.NavigateTo($"/backlog/{presetStr.ToLower()}");
+    }
+
+    private void OnStateInitHandler(GridStateEventArgs<PtItem> args)
+    {
+        var state = new GridState<PtItem>
+            {
+                SortDescriptors = new List<SortDescriptor>
+                {
+                    new SortDescriptor{ Member = "DateCreated", SortDirection = ListSortDirection.Descending }
+                },
+            };
+
+        args.GridState = state;
     }
 
     private void RowSelected(int itemId)
