@@ -12,9 +12,9 @@
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
             <TelerikButtonGroup SelectionMode="ButtonGroupSelectionMode.Single">
-                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.My" OnClick="@(_ => SelectPreset("My"))">My Items</ButtonGroupToggleButton>
-                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.Open" OnClick="@(_ => SelectPreset("Open"))">Open Items</ButtonGroupToggleButton>
-                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.Closed" OnClick="@(_ => SelectPreset("Closed"))">Closed Items</ButtonGroupToggleButton>
+                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.My" OnClick="@(() => SelectPreset("My"))">My Items</ButtonGroupToggleButton>
+                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.Open" OnClick="@(() => SelectPreset("Open"))">Open Items</ButtonGroupToggleButton>
+                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.Closed" OnClick="@(() => SelectPreset("Closed"))">Closed Items</ButtonGroupToggleButton>
             </TelerikButtonGroup>
         </div>
 
