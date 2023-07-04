@@ -37,7 +37,7 @@
             OnUpdate="@UpdateHandler">
 
     <GridColumns>
-        <GridColumn Field="@(nameof(PtItem.Type))" Title=" " Width="50px">
+        <GridColumn Field="@nameof(PtItem.Type)" Title=" " Width="50px">
             <Template>
                 @{
                     var item = context as PtItem;
@@ -45,7 +45,7 @@
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="Assignee.FullName" Title="Assignee" Width="120px" Editable="false">
+        <GridColumn Field="@nameof(PtUser.FullName)" Title="Assignee" Width="120px" Editable="false">
             <Template>
                 @{
                     var item = context as PtItem;
@@ -61,8 +61,8 @@
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="@(nameof(PtItem.Title))" Title="Title"></GridColumn>
-        <GridColumn Field="@(nameof(PtItem.Priority))" Width="100px" Filterable="true" FilterMenuType="FilterMenuType.CheckBoxList">
+        <GridColumn Field="@nameof(PtItem.Title)" Title="Title"></GridColumn>
+        <GridColumn Field="@nameof(PtItem.Priority)" Width="100px" Filterable="true" FilterMenuType="FilterMenuType.CheckBoxList">
             <Template>
                 @{
                     var item = context as PtItem;
@@ -70,8 +70,8 @@
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="@(nameof(PtItem.Estimate))" Width="100px" TextAlign="ColumnTextAlign.Right" />
-        <GridColumn Field="DateCreated" Title="Created" Width="160px" Editable="false">
+        <GridColumn Field="@nameof(PtItem.Estimate)" Width="100px" TextAlign="ColumnTextAlign.Right" />
+        <GridColumn Field="@nameof(PtItem.DateCreated)" Title="Created" Width="160px" Editable="false">
             <Template>
                 @((context as PtItem).DateCreated.ToString("MMM d, yyyy"))
             </Template>
