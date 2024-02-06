@@ -1,4 +1,5 @@
-﻿@page "/dashboard"
+﻿@page "/"
+@page "/dashboard"
 @page "/dashboard/{Months:int}/{UserId:int}"
 
 @using RPS.Core.Models
@@ -40,17 +41,20 @@
             </div>
 
             <div class="btn-group mr-2">
-                <TelerikButton OnClick="@(_ => DateRangeFilter(3))">3 Months</TelerikButton>
-                <TelerikButton OnClick="@(_ => DateRangeFilter(6))">6 Months</TelerikButton>
-                <TelerikButton OnClick="@(_ => DateRangeFilter(12))">1 Year</TelerikButton>
+                <TelerikButtonGroup SelectionMode="ButtonGroupSelectionMode.Single">
+                    <ButtonGroupToggleButton Icon="SvgIcon.Calendar" OnClick="@(() => DateRangeFilter(3))">3 Months</ButtonGroupToggleButton>
+                    <ButtonGroupToggleButton Icon="SvgIcon.Calendar" OnClick="@(() => DateRangeFilter(6))">6 Months</ButtonGroupToggleButton>
+                    <ButtonGroupToggleButton Icon="SvgIcon.Calendar" OnClick="@(() => DateRangeFilter(12))">1 Year</ButtonGroupToggleButton>
+                </TelerikButtonGroup>
+
             </div>
         </div>
     </div>
 
 
     <div class="card">
-        <TelerikTileLayout Columns="2"
-                           RowHeight="230px"
+        <TelerikTileLayout Columns="1"
+                           RowHeight="auto"
                            Reorderable="true"
                            Resizable="true"
                            OnResize="@ItemResize">
@@ -59,28 +63,28 @@
                 <TileLayoutItem HeaderText="Active Issues">
                     <Content>
                         <div class="row">
-                            <div class="col-12 col-lg-6 col-xl pb-4 active-issues">
+                            <div class="col-12 col-lg-6 col-xl active-issues">
                                 <span class="comp-label">
                                     <strong>@IssueCountActive</strong>
                                     <small>Active issues</small>
                                 </span>
                             </div>
 
-                            <div class="col-12 col-lg-6 col-xl pb-4 text-success closed-issues">
+                            <div class="col-12 col-lg-6 col-xl text-success closed-issues">
                                 <span class="comp-label">
                                     <strong>@IssueCountClosed</strong>
                                     <small>Closed issues</small>
                                 </span>
                             </div>
 
-                            <div class="col-12 col-lg-6 col-xl pb-4 text-danger open-issues">
+                            <div class="col-12 col-lg-6 col-xl text-danger open-issues">
                                 <span class="comp-label">
                                     <strong>@IssueCountOpen</strong>
                                     <small>Open issues</small>
                                 </span>
                             </div>
 
-                            <div class="col-12 col-lg-6 col-xl pb-4 close-rate">
+                            <div class="col-12 col-lg-6 col-xl close-rate">
                                 <span class="comp-label">
                                     <strong>@IssueCloseRate</strong>
                                     <small>Close rate</small>

@@ -15,13 +15,6 @@ namespace RPS.Web.Server.Pages
         [Parameter]
         public int Id { get; set; }
 
-        [Parameter]
-        public string ScreenParam { get; set; } = "Details";
-
-            public DetailScreenEnum Screen { get {
-                return Enum.Parse<DetailScreenEnum>(ScreenParam, true);
-                    } }
-
         public PtItem Item { get; set; }
 
         [Inject]

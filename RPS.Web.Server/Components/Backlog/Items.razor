@@ -1,14 +1,21 @@
 ﻿
 @using RPS.Core.Models
+@using RPS.Core.Models.Dto;
+@using Telerik.DataSource;
 @inject NavigationManager NavigationManager
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
     <h1 class="h2">Backlog</h1>
+
+
+
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-            <TelerikButton OnClick="@(_ => SelectPreset("My"))">My Items</TelerikButton>
-            <TelerikButton OnClick="@(_ => SelectPreset("Open"))">Open Items</TelerikButton>
-            <TelerikButton OnClick="@(_ => SelectPreset("Closed"))">Closed Items</TelerikButton>
+            <TelerikButtonGroup SelectionMode="ButtonGroupSelectionMode.Single">
+                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.My" OnClick="@(() => SelectPreset("My"))">My Items</ButtonGroupToggleButton>
+                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.Open" OnClick="@(() => SelectPreset("Open"))">Open Items</ButtonGroupToggleButton>
+                <ButtonGroupToggleButton Selected="Preset == Models.PresetEnum.Closed" OnClick="@(() => SelectPreset("Closed"))">Closed Items</ButtonGroupToggleButton>
+            </TelerikButtonGroup>
         </div>
 
         <div class="btn-group mr-2">
@@ -19,9 +26,18 @@
 </div>
 
 
-<TelerikGrid Height="550px" Data="PtItems" Pageable="true" Sortable="true" OnRowClick="@OnRowClickHandler">
+<TelerikGrid Height="550px" 
+            Data="@PtItems" 
+            Pageable="true" 
+            Sortable="true" 
+            FilterMode="@GridFilterMode.FilterMenu"
+            EditMode="@GridEditMode.Popup"
+            OnRowClick="@OnRowClickHandler"
+            OnStateInit="@((GridStateEventArgs<PtItem> args) => OnStateInitHandler(args))"
+            OnUpdate="@UpdateHandler">
+
     <GridColumns>
-        <GridColumn Field="@(nameof(PtItem.Type))" Title=" " Width="50px">
+        <GridColumn Field="@nameof(PtItem.Type)" Title=" " Width="50px">
             <Template>
                 @{
                     var item = context as PtItem;
@@ -29,16 +45,24 @@
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="Assignee.FullName" Title="Assignee" Width="120px">
+        <GridColumn Field="@nameof(PtItem.Assignee)" Title="Assignee" Width="120px" Editable="false">
             <Template>
                 @{
                     var item = context as PtItem;
-                    <UserAvatar User="item.Assignee" />
+                    <span data-itemId="@item.Id" id="@( "tooltip-target" + item.Id)">
+                        <UserAvatar User="item.Assignee" />
+                    </span>
+                    <TelerikTooltip TargetSelector="@( "#tooltip-target" +  item.Id)"
+                                    Position="@TooltipPosition.Right">
+                        <Template Context="ttipContext">
+                            <span>@item.Assignee.FullName</span>
+                        </Template>
+                    </TelerikTooltip> 
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="@(nameof(PtItem.Title))" Title="Title" />
-        <GridColumn Field="@(nameof(PtItem.Priority))" Width="100px">
+        <GridColumn Field="@nameof(PtItem.Title)" Title="Title"></GridColumn>
+        <GridColumn Field="@nameof(PtItem.Priority)" Width="100px" Filterable="true" FilterMenuType="FilterMenuType.CheckBoxList">
             <Template>
                 @{
                     var item = context as PtItem;
@@ -46,12 +70,19 @@
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="@(nameof(PtItem.Estimate))" Width="100px" />
-        <GridColumn Field="DateCreated" Title="Created" Width="160px">
+        <GridColumn Field="@nameof(PtItem.Estimate)" Width="100px" TextAlign="ColumnTextAlign.Right" />
+        <GridColumn Field="@nameof(PtItem.DateCreated)" Title="Created" Width="160px" Editable="false">
             <Template>
                 @((context as PtItem).DateCreated.ToString("MMM d, yyyy"))
             </Template>
         </GridColumn>
+
+        <GridCommandColumn>
+            <GridCommandButton Command="Edit">Edit</GridCommandButton>
+            <GridCommandButton Command="Save" ShowInEdit="true">Update</GridCommandButton>
+            <GridCommandButton Command="Cancel" ShowInEdit="true">Cancel</GridCommandButton>
+        </GridCommandColumn>
+
     </GridColumns>
 </TelerikGrid>
 
@@ -104,14 +135,56 @@
         NavigationManager.NavigateTo($"/backlog/{presetStr.ToLower()}");
     }
 
+    private void OnStateInitHandler(GridStateEventArgs<PtItem> args)
+    {
+        var state = new GridState<PtItem>
+            {
+                SortDescriptors = new List<SortDescriptor>
+                {
+                    new SortDescriptor{ Member = "DateCreated", SortDirection = ListSortDirection.Descending }
+                },
+            };
+
+        args.GridState = state;
+    }
+
+    private void UpdateHandler(GridCommandEventArgs args)
+    {
+        var item = (PtItem)args.Item;
+
+        // perform actual data source operations here through your service
+        var updateItem = ToPtUpdateItem(item);
+        RpsItemsRepo.UpdateItem(updateItem);
+
+        // update the local view-model data with the service data
+        Refresh();
+
+        Console.WriteLine("Update event is fired.");
+    }
+
     private void RowSelected(int itemId)
     {
-        NavigationManager.NavigateTo($"/details/{itemId}/details");
+        NavigationManager.NavigateTo($"/details/{itemId}");
     }
 
     private void OnRowClickHandler(GridRowClickEventArgs args)
     {
         RowSelected((args.Item as PtItem).Id);
+    }
+
+    private PtUpdateItem ToPtUpdateItem(PtItem item)
+    {
+        return new PtUpdateItem
+            {
+                Id = item.Id,
+                Title = item.Title,
+                Description = item.Description,
+                Estimate = item.Estimate,
+                Priority = item.Priority,
+                Status = item.Status,
+                Type = item.Type,
+                AssigneeId = item.Assignee.Id
+            };
     }
 }
 
