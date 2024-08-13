@@ -111,7 +111,7 @@
         }
     }
 
-    bool IsSelectedFileValid(Telerik.Blazor.Components.Upload.UploadFileInfo file)
+    bool IsSelectedFileValid(UploadFileInfo file)
     {
         return !(file.InvalidExtension || file.InvalidMaxFileSize || file.InvalidMinFileSize);
     }
