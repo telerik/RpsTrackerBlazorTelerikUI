@@ -20,7 +20,7 @@
         public List<MenuItem> Items { get; set; }
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         List<MenuItem> mitems = new List<MenuItem> {
             new MenuItem {  Text = "Dashboard", Page = "/dashboard" },
